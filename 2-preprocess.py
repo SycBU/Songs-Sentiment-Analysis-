@@ -49,17 +49,19 @@ client = storage.Client()
 bucket_name = "lyrics_sa"
 bucket = client.bucket(bucket_name)
 
-# Function to download file from GCS
+# Function to download file from a folder in GCS
 def download_from_gcs(blob_name, local_path):
-    blob = bucket.blob(blob_name)
+    full_blob_path = f"filtered/{blob_name}"  # Specify the 'filtered' folder
+    blob = bucket.blob(full_blob_path)
     blob.download_to_filename(local_path)
-    print(f"Downloaded {blob_name} to {local_path}")
+    print(f"Downloaded {full_blob_path} to {local_path}")
 
-# Function to upload file to GCS
+# Function to upload file to a folder in GCS
 def upload_to_gcs(local_path, blob_name):
-    blob = bucket.blob(blob_name)
+    full_blob_path = f"cleaned/{blob_name}"  # Specify the 'cleaned' folder
+    blob = bucket.blob(full_blob_path)
     blob.upload_from_filename(local_path)
-    print(f"Uploaded {local_path} to {blob_name}")
+    print(f"Uploaded {local_path} to {full_blob_path}")
 
 # Define the preprocessing function for lyrics
 def preprocess_lyrics(lyrics):
