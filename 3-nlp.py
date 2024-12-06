@@ -4,17 +4,25 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from google.cloud import language_v1, storage, bigquery
 
-# Initialize clients for GCS and BigQuery
 storage_client = storage.Client()
 bigquery_client = bigquery.Client()
 bucket_name = "lyrics_sa"
 
-# Function to download a file from GCS
+# Function to download file from a folder in GCS
 def download_from_gcs(blob_name, local_path):
+    full_blob_path = f"cleaned/{blob_name}"  # Specify the 'cleaned' folder
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(blob_name)
+    blob = bucket.blob(full_blob_path)
     blob.download_to_filename(local_path)
-    print(f"Downloaded {blob_name} to {local_path}")
+    print(f"Downloaded {full_blob_path} to {local_path}")
+
+# Function to upload file to a folder in GCS
+def upload_to_gcs(local_path, blob_name):
+    full_blob_path = f"results/{blob_name}"  # Specify the 'results' folder
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(full_blob_path)
+    blob.upload_from_filename(local_path)
+    print(f"Uploaded {local_path} to {full_blob_path}")
 
 # Function to upload results to BigQuery
 def upload_to_bigquery(df, dataset_id, table_id):
