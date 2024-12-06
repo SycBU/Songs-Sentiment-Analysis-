@@ -81,6 +81,6 @@ filtered_data.to_csv(filtered_local_path, sep="\t", index=False)
 print(f"Filtered data saved locally to {filtered_local_path}")
 
 # Upload the filtered dataset back to GCS
-filtered_gcs_path = "filtered_data.tsv"
+filtered_gcs_path = "filtered/filtered_data.tsv"
 upload_to_gcs(filtered_local_path, filtered_gcs_path)
 print(f"Filtered data uploaded to GCS at {filtered_gcs_path}")
